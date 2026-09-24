@@ -4,7 +4,7 @@ Halo! Selamat datang di CV Blaster. Jika kamu adalah **Fresh Graduate** atau pen
 
 CV Blaster adalah robot asisten cerdas (menggunakan teknologi Gemini AI) yang akan membantumu mengirimkan lamaran kerja secara otomatis ke platform pencarian kerja populer.
 
-**> ⚠️ PENTING UNTUK PEMULA & NON-IT!**
+**⚠️ PENTING UNTUK PEMULA & NON-IT!**
 **> Abaikan semua file kode dan folder yang ada di bagian atas halaman ini. Kamu **TIDAK PERLU** mengerti bahasa pemrograman sama sekali untuk memakai aplikasi ini. Cukup ikuti panduan mudah di bawah ini!
 **
 ---
