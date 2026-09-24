@@ -1,0 +1,47 @@
+{
+  "name": "cv-blaster-desktop",
+  "version": "0.1.1",
+  "description": "CV Blaster Automation Desktop Application",
+  "author": "Yoga Adi Saputra",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "eslint",
+    "electron:dev": "concurrently -k -r \"next dev -p 3000\" \"wait-on -t 30000 tcp:3000 && electron .\"",
+    "electron:build": "npm run build && electron-builder",
+    "electron:build:mac": "npm run build && electron-builder --mac",
+    "electron:build:win": "npm run build && electron-builder --win",
+    "preflight:win": "node scripts/preflight-windows.cjs",
+    "make:exe": "npm run preflight:win && npm run build && npm run verify:next && electron-builder --win nsis --x64",
+    "verify:next": "node scripts/verify-next-bundle.cjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.120.0",
+    "@google/generative-ai": "^0.24.1",
+    "csv-parse": "^7.0.2",
+    "googleapis": "^176.0.0",
+    "next": "16.3.2",
+    "puppeteer": "^24.43.1",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "concurrently": "^9.2.4",
+    "cross-env": "^10.1.0",
+    "electron": "^41.7.1",
+    "electron-builder": "^26.15.3",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.2",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "wait-on": "^9.1.0"
+  }
+}

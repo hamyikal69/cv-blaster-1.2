@@ -1,0 +1,53 @@
+{
+  "appId": "com.cvblaster.app",
+  "productName": "CV Blaster",
+  "directories": {
+    "output": "dist-electron"
+  },
+  "files": [
+    "electron/**/*",
+    ".next/**/*",
+    "!.next/cache/**/*",
+    "public/**/*",
+    "package.json",
+    "node_modules/**/*",
+    "!node_modules/**/*.map",
+    "!node_modules/.cache/**/*",
+    "!automation-profile/**/*",
+    "!dist-electron/**/*"
+  ],
+  "asar": false,
+  "mac": {
+    "category": "public.app-category.productivity",
+    "icon": "electron/assets/icon.icns",
+    "target": [
+      {
+        "target": "dmg",
+        "arch": [
+          "arm64"
+        ]
+      }
+    ],
+    "hardenedRuntime": true,
+    "gatekeeperAssess": false
+  },
+  "win": {
+    "icon": "electron/assets/icon.png",
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }
+    ],
+    "artifactName": "CV-Blaster-Setup-${version}-Windows-${arch}.${ext}"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "CV Blaster"
+  }
+}
