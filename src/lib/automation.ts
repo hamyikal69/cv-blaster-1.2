@@ -60,22 +60,30 @@ export async function startBot(
     let totalAlreadyApplied = 0;
     let totalErrors = 0;
 
+    // Defense-in-depth: config values are already clamped to <=50 by config.ts, but these
+    // fallbacks previously used un-clamped magic numbers (155/80/75/50) that would silently
+    // blow past the 50 cap if a stale/hand-edited config.json ever reached this code without
+    // going through normalizeConfigValues(). Every fallback below is now hard-clamped to 50.
+    const clamp50 = (n: unknown, fallback: number) => {
+      const v = Number(n);
+      return Math.max(1, Math.min(50, Number.isFinite(v) && v > 0 ? v : fallback));
+    };
     const isSharedMode = config.limitMode !== 'per_platform';
-    const sharedLimitTarget = config.limitPerDay || 155;
+    const sharedLimitTarget = clamp50(config.limitPerDay, 50);
 
     if (isSharedMode) {
       onLog(`🎯 Mode Kuota: Kuota Gabungan Aktif (Target Total: ${sharedLimitTarget} lamaran untuk semua platform).`);
     } else {
-      onLog(`🎯 Mode Kuota: Kuota Per-Platform Aktif (Glints: ${config.limitGlints || 80}, JobStreet: ${config.limitJobstreet || 75}, LinkedIn: ${config.limitLinkedin || 50}).`);
+      onLog(`🎯 Mode Kuota: Kuota Per-Platform Aktif (Glints: ${clamp50(config.limitGlints, 20)}, JobStreet: ${clamp50(config.limitJobstreet, 20)}, LinkedIn: ${clamp50(config.limitLinkedin, 20)}).`);
     }
 
     const glintsLimiter = {
-      getTargetLimit: () => isSharedMode ? sharedLimitTarget : (config.limitGlints || config.limitPerDay || 80),
+      getTargetLimit: () => isSharedMode ? sharedLimitTarget : clamp50(config.limitGlints ?? config.limitPerDay, 20),
       isLimitReached: (currentGlintsSuccess: number) => {
         if (isSharedMode) {
           return totalSuccess >= sharedLimitTarget;
         }
-        return currentGlintsSuccess >= (config.limitGlints || config.limitPerDay || 80);
+        return currentGlintsSuccess >= clamp50(config.limitGlints ?? config.limitPerDay, 20);
       },
       onJobSuccess: () => {
         totalSuccess++;
@@ -83,12 +91,12 @@ export async function startBot(
     };
 
     const jobstreetLimiter = {
-      getTargetLimit: () => isSharedMode ? sharedLimitTarget : (config.limitJobstreet || config.limitPerDay || 75),
+      getTargetLimit: () => isSharedMode ? sharedLimitTarget : clamp50(config.limitJobstreet ?? config.limitPerDay, 20),
       isLimitReached: (currentJobstreetSuccess: number) => {
         if (isSharedMode) {
           return totalSuccess >= sharedLimitTarget;
         }
-        return currentJobstreetSuccess >= (config.limitJobstreet || config.limitPerDay || 75);
+        return currentJobstreetSuccess >= clamp50(config.limitJobstreet ?? config.limitPerDay, 20);
       },
       onJobSuccess: () => {
         totalSuccess++;
@@ -96,12 +104,12 @@ export async function startBot(
     };
 
     const linkedinLimiter = {
-      getTargetLimit: () => isSharedMode ? sharedLimitTarget : (config.limitLinkedin || config.limitPerDay || 50),
+      getTargetLimit: () => isSharedMode ? sharedLimitTarget : clamp50(config.limitLinkedin ?? config.limitPerDay, 20),
       isLimitReached: (currentLinkedinSuccess: number) => {
         if (isSharedMode) {
           return totalSuccess >= sharedLimitTarget;
         }
-        return currentLinkedinSuccess >= (config.limitLinkedin || config.limitPerDay || 50);
+        return currentLinkedinSuccess >= clamp50(config.limitLinkedin ?? config.limitPerDay, 20);
       },
       onJobSuccess: () => {
         totalSuccess++;
@@ -109,12 +117,12 @@ export async function startBot(
     };
 
     const indeedLimiter = {
-      getTargetLimit: () => isSharedMode ? sharedLimitTarget : (config.limitIndeed || config.limitPerDay || 50),
+      getTargetLimit: () => isSharedMode ? sharedLimitTarget : clamp50(config.limitIndeed ?? config.limitPerDay, 20),
       isLimitReached: (currentIndeedSuccess: number) => {
         if (isSharedMode) {
           return totalSuccess >= sharedLimitTarget;
         }
-        return currentIndeedSuccess >= (config.limitIndeed || config.limitPerDay || 50);
+        return currentIndeedSuccess >= clamp50(config.limitIndeed ?? config.limitPerDay, 20);
       },
       onJobSuccess: () => {
         totalSuccess++;

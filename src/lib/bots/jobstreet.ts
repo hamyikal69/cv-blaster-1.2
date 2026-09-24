@@ -265,7 +265,7 @@ export async function runJobstreetBot(
           onLog(`[Worker ${workerId + 1}] 💼 Job: "${jobDetails.title}" at "${jobDetails.company}"`);
 
           // Eligibility gate: only proceed when the job is supported by the configured profile/CV evidence.
-          const eligibility = await assessJobEligibility(jobDetails.title, jobDetails.company, jobDetails.description, config);
+          const eligibility = await assessJobEligibility(jobDetails.title, jobDetails.company, jobDetails.description, config, onLog);
           onLog(`[Worker ${workerId + 1}] 🧭 Eligibility: ${eligibility.eligible ? 'ELIGIBLE' : 'SKIP'} (confidence ${Math.round(eligibility.confidence * 100)}%)`);
           if (!eligibility.eligible) {
             onLog(`[Worker ${workerId + 1}] ⏩ Dilewati karena eligibility tidak cukup: ${[...eligibility.reasons, ...eligibility.missingRequirements].join(' | ')}`);
@@ -307,7 +307,14 @@ export async function runJobstreetBot(
             const btn = findApplyElement();
             if (!btn) return { exists: false, text: '', isAlreadyApplied: false, isExternal: false };
 
-            const buttonText = normalizeButtonText(btn.textContent || '');
+            // NOTE: this whole arrow function runs inside the BROWSER via page.evaluate(),
+            // not in Node — it cannot reference the outer normalizeButtonText() helper
+            // (that call used to break as "<minified-name> is not defined" once the
+            // production build minified the helper's name). Normalization is inlined here.
+            const buttonText = (btn.textContent || '')
+              .replace(/[\u200B-\u200D\u2060\uFEFF\u2061-\u2064\u00AD]/g, '')
+              .replace(/\s+/g, ' ')
+              .trim();
             const href = btn.getAttribute('href') || '';
 
             // Check if already applied
@@ -318,8 +325,15 @@ export async function runJobstreetBot(
             // observed in the current flow; it must never be counted as an application.
             let isExternal = /^(Daftar|Register)$/i.test(buttonText) || /situs perusahaan|company website|employer site|situs web|apply on company|visit employer/i.test(buttonText);
             if (!isExternal && href.startsWith('http')) {
+              // Inlined (not calling the outer isJobstreetHost() helper — same reason as
+              // above: this runs in the browser via page.evaluate and cannot see it).
+              // Previously this was wrapped in try/catch that silently swallowed the
+              // ReferenceError, so this whole external-host check was a silent no-op in
+              // the production build.
               try {
-                isExternal = !isJobstreetHost(href);
+                const hostname = new URL(href).hostname.toLowerCase();
+                const isKnownJobstreetHost = hostname === 'jobstreet.com' || hostname.endsWith('.jobstreet.com') || hostname === 'seek.com' || hostname.endsWith('.seek.com');
+                isExternal = !isKnownJobstreetHost;
               } catch {}
             }
 

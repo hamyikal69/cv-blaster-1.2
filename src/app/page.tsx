@@ -45,6 +45,7 @@ interface AppConfig {
   dateOfBirthYear?: string;
   languages?: string;
   geminiApiKey?: string;
+  eligibilityCheckEnabled?: boolean;
 }
 
 interface AppliedJob {
@@ -73,6 +74,7 @@ const EMPTY_CONFIG: AppConfig = {
   questionsSheetName: 'Sheet2',
   googleCredentialsJson: '',
   geminiApiKey: '',
+  eligibilityCheckEnabled: true,
   searchKeywords: '',
   location: '',
   minSalary: '',
@@ -926,6 +928,35 @@ export default function Home() {
                     className="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-slate-200 focus:outline-none focus:border-blue-500"
                   />
                 </div>
+              </div>
+
+              {/* Eligibility Check On/Off */}
+              <div className="p-4 bg-slate-900/80 border border-slate-800 rounded-lg space-y-2">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <h3 className="text-sm font-semibold text-slate-200">🧭 Eligibility Check (AI)</h3>
+                    <p className="text-xs text-slate-400 mt-1">
+                      Saat ON: setiap lowongan dinilai dulu (Gemini AI, atau gate lokal kalau API key kosong/gagal) sebelum dilamar.
+                      Saat OFF: bot langsung melamar semua lowongan yang ditemukan tanpa penyaringan.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setConfig({ ...config, eligibilityCheckEnabled: !(config.eligibilityCheckEnabled ?? true) })}
+                    className={`shrink-0 relative inline-flex h-6 w-11 items-center rounded-full transition ${
+                      (config.eligibilityCheckEnabled ?? true) ? 'bg-emerald-600' : 'bg-slate-700'
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
+                        (config.eligibilityCheckEnabled ?? true) ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
+                </div>
+                {!(config.eligibilityCheckEnabled ?? true) && (
+                  <p className="text-xs text-amber-400">⚠️ Hati-hati: dengan OFF, bot bisa melamar ke lowongan yang jauh dari profil kamu (mis. posisi senior, beda bidang, syarat pengalaman tidak terpenuhi).</p>
+                )}
               </div>
 
               {/* Skema Limit Per Day / Per Platform */}

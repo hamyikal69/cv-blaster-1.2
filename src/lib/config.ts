@@ -47,6 +47,8 @@ export interface AppConfig {
   /** Optional explicit language evidence used for questionnaire checklists. */
   languages?: string;
   geminiApiKey?: string;
+  /** Konfigurasi Bot toggle: matikan untuk melewati eligibility gate sepenuhnya (apply ke semua lowongan tanpa dinilai AI/lokal). Default: true (aktif). */
+  eligibilityCheckEnabled?: boolean;
 }
 
 const CONFIG_DIR = process.env.APP_USER_DATA || process.cwd();
@@ -58,6 +60,7 @@ export const DEFAULT_CONFIG: AppConfig = {
   questionsSheetName: 'Sheet2',
   googleCredentialsJson: '',
   geminiApiKey: '',
+  eligibilityCheckEnabled: true,
   searchKeywords: '',
   location: '',
   minSalary: '',
