@@ -1,60 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+**🚀 CV Blaster - Asisten Melamar Kerja Otomatis**
 
-## Getting Started
+Halo! Selamat datang di CV Blaster. Jika kamu adalah **Fresh Graduate** atau pencari kerja yang lelah melamar pekerjaan satu per satu secara manual, aplikasi ini dibuat khusus untukmu! 
 
-First, run the development server:
+CV Blaster adalah robot asisten cerdas (menggunakan teknologi Gemini AI) yang akan membantumu mengirimkan lamaran kerja secara otomatis ke platform pencarian kerja populer.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**> ⚠️ PENTING UNTUK PEMULA & NON-IT!**
+**> Abaikan semua file kode dan folder yang ada di bagian atas halaman ini. Kamu **TIDAK PERLU** mengerti bahasa pemrograman sama sekali untuk memakai aplikasi ini. Cukup ikuti panduan mudah di bawah ini!
+**
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**📥 Cara Download (Unduh) Aplikasi**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Kamu hanya perlu mendownload file aplikasinya (berformat `.exe`), persis seperti mendownload aplikasi Windows pada umumnya.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Perhatikan menu di sebelah kanan halaman ini, cari dan klik tulisan **Releases**.
+2. Klik versi yang paling atas/terbaru (Contoh: `v0.1.1-fix`).
+3. Scroll ke bawah, klik file bernama **`CV-Blaster-Setup-0.1.1-Windows-x64.exe`** untuk mulai mendownload.
+4. Tunggu hingga file selesai didownload ke laptop kamu.
 
-## Learn More
+💻 Cara Install di Laptop Windows
 
-To learn more about Next.js, take a look at the following resources:
+1. Buka folder `Downloads` di laptopmu, lalu klik dua kali (Double-click) pada file `.exe` yang baru saja didownload.
+2. **Catatan:** Jika muncul layar peringatan biru dari Windows (*Windows protected your PC*), jangan panik. Klik tulisan **More info**, lalu klik tombol **Run anyway**.
+3. Ikuti langkah instalasinya dengan menekan tombol **Next** atau **Install** sampai selesai.
+4. Buka aplikasi **CV Blaster** dari Desktop laptop kamu.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**🛠️ Persiapan Sebelum Memulai**
 
-## Deploy on Vercel
+Sebelum menyuruh robot ini melamar kerja, ada 2 hal yang harus disiapkan:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**1. Kunci Rahasia Gemini (Gemini API Key)**
+Aplikasi ini butuh otak AI untuk menyesuaikan lamaranmu.
+* Buka website: [Google AI Studio](https://aistudio.google.com/app/apikey)
+* Login pakai akun Google kamu.
+* Klik tombol **Create API key**.
+* Copy kode panjang yang muncul, lalu Paste ke dalam aplikasi CV Blaster. (Kunci ini gratis!).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**2. Isi Profil Pelamar dengan Lengkap**
+Di dalam aplikasi CV Blaster, isi biodata kamu selengkap-lengkapnya. 
+* Pastikan **Tanggal, Bulan, dan Tahun Lahir** terisi semua.
+* Isi pengalaman dan keahlianmu. AI akan menggunakan data ini untuk menjawab pertanyaan wawancara tertulis saat melamar.
 
-## Gemini questionnaire + JobStreet cover-letter behavior
+---
 
-CV Blaster now embeds a strict Gemini System Instruction for questionnaire answering. Candidate DOB is stored as `dateOfBirth` (`YYYY-MM-DD`) and is used deterministically for day/month/year questions. JobStreet cover-letter choices prefer `Tulis Surat Lamaran` when that option exists, then generate a job-specific Gemini cover letter from the job title, visible job description, and configured candidate profile.
+**🎯 Cara Melamar Kerja Otomatis**
 
-See `GEMINI_SYSTEM_INSTRUCTION_CV_BLASTER.md` for the same policy in copy/paste form.
+Biar robotnya tidak kaget dan salah kirim, selalu lakukan uji coba skala kecil dulu untuk pertama kali!
 
-## Windows Build (GitHub Codespaces)
+1. Buka aplikasi CV Blaster.
+2. Di bagian Target Platform, **Centang JobStreet saja** dulu. (Matikan Glints, LinkedIn, atau Indeed).
+3. Atur **Concurrency menjadi 1** (Artinya: robot hanya fokus membuka 1 lowongan dalam satu waktu).
+4. Atur **Limit menjadi 1** (Artinya: robot akan berhenti setelah berhasil mengirim 1 lamaran).
+5. **Wajib Centang: Debug / Test Mode**. Ini membuat layar pencarian kerja terlihat olehmu, sehingga kamu bisa menonton langsung bagaimana robot ini mengklik, mengetik, dan mengirim CV kamu seolah-olah itu dilakukan oleh tanganmu sendiri.
+6. Klik **Start** dan biarkan tanganmu lepas dari mouse. Tonton robotnya bekerja!
 
-Use `BUILD-WINDOWS-CODESPACES.md`. After dependencies and Wine are available, the intended build command is:
+Jika uji coba 1 lamaran ini sudah sukses, kamu bisa mematikan *Debug Mode*, menaikkan *Limit* (misal 50 lamaran), dan pergi tidur atau membuat kopi sementara asistenmu bekerja keras mencarikan pekerjaan.
 
-```bash
-npm run make:exe
-```
+---
 
-The build produces a Windows x64 NSIS installer in `dist-electron/`.
-
-### Safety/automation behavior
-- Candidate DOB is edited as separate Tanggal/Bulan/Tahun fields in Profil Pelamar and stored as `YYYY-MM-DD`.
-- Candidate email is editable in Profil Pelamar; legacy email fallback is only used when the field is empty.
-- Deterministic profile facts are evaluated before the Google Sheets question cache.
-- JobStreet uses an eligibility gate based on configured candidate evidence and job listing content.
-- JobStreet uses strict questionnaire mode: unresolved questions are not guessed and can stop the application before submission.
-- JobStreet prefers `Tulis Surat Lamaran` and generates a job-specific Gemini cover letter.
+**💡 Gunakan dengan Bijak!**
+Aplikasi ini mempercepat proses melamar, namun pastikan profil dan CV (Resume) PDF kamu sudah berkualitas agar peluang dipanggil HRD semakin besar. Semangat mencari kerja!
